@@ -3,7 +3,7 @@
 #include "Main.h"
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-int main(void) {
+int main(int argc, char** argv) {
 
     bool blnKNNTrainingSuccessful = loadKNNDataAndTrainKNN();           // attempt KNN training
 
@@ -15,7 +15,10 @@ int main(void) {
 
     cv::Mat imgOriginalScene;           // input image
 
-    imgOriginalScene = cv::imread("image1.png");         // open image
+    if (argc > 1)
+        imgOriginalScene = cv::imread(cv::samples::findFileOrKeep(argv[1]));
+    else
+        imgOriginalScene = cv::imread("image1.png");         // open image
 
     if (imgOriginalScene.empty()) {                             // if unable to open image
         std::cout << "error: image not read from file\n\n";     // show error message on command line
@@ -82,7 +85,7 @@ void writeLicensePlateCharsOnImage(cv::Mat &imgOriginalScene, PossiblePlate &lic
     cv::Point ptCenterOfTextArea;                   // this will be the center of the area the text will be written to
     cv::Point ptLowerLeftTextOrigin;                // this will be the bottom left of the area that the text will be written to
 
-    int intFontFace = CV_FONT_HERSHEY_SIMPLEX;                              // choose a plain jane font
+    int intFontFace = cv::FONT_HERSHEY_SIMPLEX;                              // choose a plain jane font
     double dblFontScale = (double)licPlate.imgPlate.rows / 30.0;            // base font scale on height of plate area
     int intFontThickness = (int)std::round(dblFontScale * 1.5);             // base font thickness on font scale
     int intBaseline = 0;
